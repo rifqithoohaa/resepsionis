@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Pengunjung</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .form-container {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: auto;
+      }
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Form Pengunjung</h2>
+      <form id="visitorForm">
+        <label for="tanggal">Tanggal:</label>
+        <input type="date" id="tanggal" required />
+
+        <label for="waktu">Waktu:</label>
+        <input type="time" id="waktu" required />
+
+        <label for="nama">Nama Pengunjung:</label>
+        <input type="text" id="nama" required />
+
+        <label for="tujuan">Tujuan:</label>
+        <input type="text" id="tujuan" required />
+
+        <label for="nomorhp">Nomor HP:</label>
+        <input
+          type="tel"
+          id="nomorhp"
+          required
+          pattern="[0-9]{10,15}"
+          placeholder="0812xxxxxxx"
+        />
+
+        <label for="temui">Orang yang Ingin Ditemui:</label>
+        <input type="text" id="temui" required />
+
+        <button type="submit">Simpan</button>
+      </form>
+      <div id="status"></div>
+    </div>
+
+    <script>
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbxXAl8it-Z3BuoCW_OLbDtj_Dy-_COVcOj7VwGd5_jj46Ljl6azJjWsRs88I0MMB-apNw/exec"; // ganti dengan URL Anda
+
+      document
+        .getElementById("visitorForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const data = {
+            tanggal: document.getElementById("tanggal").value,
+            waktu: document.getElementById("waktu").value,
+            nama: document.getElementById("nama").value,
+            tujuan: document.getElementById("tujuan").value,
+            nomorhp: document.getElementById("nomorhp").value,
+            temui: document.getElementById("temui").value,
+          };
+
+          fetch(scriptURL, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((response) => {
+              document.getElementById("status").innerText =
+                "Data berhasil disimpan!";
+              document.getElementById("visitorForm").reset();
+            })
+            .catch((error) => {
+              console.error("Error!", error.message);
+              document.getElementById("status").innerText =
+                "Terjadi kesalahan.";
+            });
+        });
+    </script>
+  </body>
+</html>
